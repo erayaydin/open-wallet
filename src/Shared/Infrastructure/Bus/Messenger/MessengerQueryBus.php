@@ -9,11 +9,13 @@ use OpenWallet\Shared\Infrastructure\Bus\Exceptions\QueryNotRegisteredException;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionMethod;
+use Symfony\Component\Messenger\Exception\HandlerFailedException;
 use Symfony\Component\Messenger\Exception\NoHandlerForMessageException;
 use Symfony\Component\Messenger\Handler\HandlersLocator;
 use Symfony\Component\Messenger\MessageBus;
 use Symfony\Component\Messenger\Middleware\HandleMessageMiddleware;
 use Symfony\Component\Messenger\Stamp\HandledStamp;
+use Throwable;
 
 use function Lambdish\Phunctional\map;
 use function Lambdish\Phunctional\reindex;
@@ -43,6 +45,7 @@ class MessengerQueryBus implements QueryBus
 
     /**
      * @throws QueryNotRegisteredException
+     * @throws Throwable
      */
     public function ask(Query $query): ?Response
     {
@@ -53,6 +56,13 @@ class MessengerQueryBus implements QueryBus
             return $stamp->getResult();
         } catch (NoHandlerForMessageException) {
             throw new QueryNotRegisteredException('Query '.get_class($query).' not registered.');
+        } catch (HandlerFailedException $e) {
+            while ($e instanceof HandlerFailedException) {
+                /** @var Throwable $e */
+                $e = $e->getPrevious();
+            }
+
+            throw $e;
         }
     }
 
