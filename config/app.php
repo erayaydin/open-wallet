@@ -2,7 +2,6 @@
 
 use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\ServiceProvider;
-use OpenWallet\Providers\ApiServiceProvider;
 
 return [
 
@@ -156,7 +155,12 @@ return [
     |
     */
 
-    'providers' => ServiceProvider::defaultProviders()->toArray(),
+    'providers' => ServiceProvider::defaultProviders()->merge([
+        OpenWallet\Shared\Infrastructure\Laravel\BusServiceProvider::class,
+        OpenWallet\Shared\Infrastructure\Laravel\RamseyUuidServiceProvider::class,
+
+        OpenWallet\UserAccess\Infrastructure\Laravel\UserAccessDomainServiceProvider::class,
+    ])->toArray(),
 
     /*
     |--------------------------------------------------------------------------

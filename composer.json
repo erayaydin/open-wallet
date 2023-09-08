@@ -7,8 +7,10 @@
     "require": {
         "php": "^8.1",
         "guzzlehttp/guzzle": "^7.2",
+        "lambdish/phunctional": "^2.1",
         "laravel/framework": "^10.10",
-        "laravel/tinker": "^2.8"
+        "laravel/tinker": "^2.8",
+        "symfony/messenger": "^6.3"
     },
     "require-dev": {
         "laravel/pint": "^1.13",
