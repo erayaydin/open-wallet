@@ -9,10 +9,10 @@ use Illuminate\Support\Facades\RateLimiter;
 use OpenWallet\Shared\Infrastructure\Laravel\DomainServiceProvider;
 use OpenWallet\Shared\Infrastructure\Laravel\Traits\HasMigrations;
 use OpenWallet\Shared\Infrastructure\Laravel\Traits\HasRoutes;
-use OpenWallet\UserAccess\Application\Register\RegisterUserCommandHandler;
+use OpenWallet\UserAccess\Application\Register\AccountRegisterCommandHandler;
 use OpenWallet\UserAccess\Domain\Repository\UserRepository;
 use OpenWallet\UserAccess\Infrastructure\Persistence\Eloquent\UserRepository as EloquentUserRepository;
-use OpenWallet\UserAccess\Interface\Http\Controllers\UserRegisterController;
+use OpenWallet\UserAccess\Interface\Http\Controllers\AccountRegisterController;
 
 final class UserAccessDomainServiceProvider extends DomainServiceProvider
 {
@@ -23,7 +23,7 @@ final class UserAccessDomainServiceProvider extends DomainServiceProvider
     ];
 
     protected array $commandHandlers = [
-        RegisterUserCommandHandler::class,
+        AccountRegisterCommandHandler::class,
     ];
 
     public function boot(): void
@@ -44,7 +44,7 @@ final class UserAccessDomainServiceProvider extends DomainServiceProvider
             ->prefix('api/v1/account')
             ->group(function (Router $router) {
                 $router
-                    ->post('register', UserRegisterController::class)
+                    ->post('register', AccountRegisterController::class)
                     ->name('store');
             });
     }

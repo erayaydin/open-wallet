@@ -5,12 +5,12 @@ namespace OpenWallet\UserAccess\Application;
 use OpenWallet\Shared\Domain\Bus\Query\Response;
 use OpenWallet\UserAccess\Domain\Aggregate\User;
 
-final class UserResponse implements Response
+final readonly class UserResponse implements Response
 {
     public function __construct(
-        public readonly string $id,
-        public readonly string $name,
-        public readonly string $email
+        public string $id,
+        public string $name,
+        public string $email
     ) {
     }
 
