@@ -20,7 +20,7 @@ class ApiServiceProvider extends ServiceProvider
         $app->call([$this, 'loadRoutes']);
 
         $app->booted(function (Application $app) {
-            /** @var Router */
+            /** @var Router $app */
             $router = $app['router'];
 
             $router->getRoutes()->refreshNameLookups();
