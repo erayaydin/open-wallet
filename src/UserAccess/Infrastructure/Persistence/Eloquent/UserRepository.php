@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\DB;
 use OpenWallet\Shared\Infrastructure\Persistence\Eloquent\Exceptions\EloquentException;
 use OpenWallet\UserAccess\Domain\Aggregate\User;
 use OpenWallet\UserAccess\Domain\Repository\UserRepository as UserRepositoryInterface;
+use OpenWallet\UserAccess\Domain\ValueObject\DeviceName;
+use OpenWallet\UserAccess\Domain\ValueObject\Token;
 use OpenWallet\UserAccess\Domain\ValueObject\UserEmail;
 use OpenWallet\UserAccess\Domain\ValueObject\UserId;
 use OpenWallet\UserAccess\Infrastructure\Persistence\Eloquent\User as UserModel;
@@ -54,7 +56,7 @@ final class UserRepository implements UserRepositoryInterface
 
         $model->setAttribute('name', $user->name->getValue());
         $model->setAttribute('email', $user->email->getValue());
-        $model->setAttribute('password', $user->password->getValue());
+        $model->setAttribute('password', $user->password->encrypted());
         $model->setAttribute('email_verified_at', $user->emailVerifiedAt?->getValue());
 
         DB::beginTransaction();
@@ -80,5 +82,16 @@ final class UserRepository implements UserRepositoryInterface
             $model->getAttribute('password'),
             $model->getAttribute('email_verified_at')
         );
+    }
+
+    public function createToken(UserId $userId, DeviceName $deviceName): ?Token
+    {
+        $userModel = $this->model->find($userId->getValue());
+
+        if ($userModel === null) {
+            return null;
+        }
+
+        return Token::from($userModel->createToken($deviceName->getValue())->plainTextToken);
     }
 }
