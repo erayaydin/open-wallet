@@ -156,9 +156,7 @@ return [
     |
     */
 
-    'providers' => ServiceProvider::defaultProviders()->merge([
-        ApiServiceProvider::class,
-    ])->toArray(),
+    'providers' => ServiceProvider::defaultProviders()->toArray(),
 
     /*
     |--------------------------------------------------------------------------
