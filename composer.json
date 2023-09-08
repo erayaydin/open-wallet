@@ -13,6 +13,8 @@
         "symfony/messenger": "^6.3"
     },
     "require-dev": {
+        "captainhook/captainhook": "^5.16",
+        "captainhook/plugin-composer": "^5.3",
         "laravel/pint": "^1.13",
         "laravel/sail": "^1.18",
         "ramsey/conventional-commits": "^1.5"
@@ -25,7 +27,8 @@
     "scripts": {
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
-            "@php artisan package:discover --ansi"
+            "@php artisan package:discover --ansi",
+            "vendor/bin/captainhook install -f -s"
         ],
         "post-update-cmd": [
             "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
@@ -40,6 +43,22 @@
     "extra": {
         "laravel": {
             "dont-discover": []
+        },
+        "ramsey/conventional-commits": {
+            "config": {
+                "typeCase": "kebab",
+                "types": [
+                    "ci", "deps", "docs", "refactor", "style", "test", "chore"
+                ],
+                "scopeCase": "kebab",
+                "scopeRequired": false,
+                "scopes": [],
+                "descriptionCase": null,
+                "descriptionEndMark": null,
+                "bodyRequired": false,
+                "bodyWrapWidth": 72,
+                "requiredFooters": []
+            }
         }
     },
     "config": {
@@ -47,7 +66,8 @@
         "preferred-install": "dist",
         "sort-packages": true,
         "allow-plugins": {
-            "php-http/discovery": true
+            "php-http/discovery": true,
+            "captainhook/plugin-composer": true
         }
     },
     "minimum-stability": "stable",
