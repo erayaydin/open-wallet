@@ -21,6 +21,52 @@ services:
       - '.:/var/www/html'
     networks:
       - sail
+  pgsql:
+    image: 'postgres:15'
+    ports:
+      - '${FORWARD_DB_PORT:-5432}:5432'
+    environment:
+      PGPASSWORD: '${DB_PASSWORD:-secret}'
+      POSTGRES_DB: '${DB_DATABASE}'
+      POSTGRES_USER: '${DB_USERNAME}'
+      POSTGRES_PASSWORD: '${DB_PASSWORD:-secret}'
+    volumes:
+      - 'sail-pgsql:/var/lib/postgresql/data'
+      - './vendor/laravel/sail/database/pgsql/create-testing-database.sql:/docker-entrypoint-initdb.d/10-create-testing-database.sql'
+    networks:
+      - sail
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "pg_isready",
+          "-q",
+          "-d",
+          "${DB_DATABASE}",
+          "-U",
+          "${DB_USERNAME}"
+        ]
+      retries: 3
+      timeout: 5s
+  pgadmin:
+    image: 'dpage/pgadmin4'
+    ports:
+      - '${FORWARD_PGADMIN_PORT:-8181}:80'
+    networks:
+      - sail
+    volumes:
+      - sail-pgadmin:/var/lib/pgadmin
+      - ./docker/pgadmin/servers.json:/pgadmin4/servers.json
+    depends_on:
+      - pgsql
+    environment:
+      PGADMIN_DEFAULT_EMAIL: '${PGADMIN_DEFAULT_EMAIL:-admin@ceptemenu.app}'
+      PGADMIN_DEFAULT_PASSWORD: '${PGADMIN_DEFAULT_PASSWORD:-secret}'
 networks:
   sail:
     driver: bridge
+volumes:
+  sail-pgsql:
+    driver: local
+  sail-pgadmin:
+    driver: local
