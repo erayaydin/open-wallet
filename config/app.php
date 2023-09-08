@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\ServiceProvider;
+use OpenWallet\Providers\ApiServiceProvider;
 
 return [
 
@@ -155,7 +156,9 @@ return [
     |
     */
 
-    'providers' => ServiceProvider::defaultProviders()->toArray(),
+    'providers' => ServiceProvider::defaultProviders()->merge([
+        ApiServiceProvider::class,
+    ])->toArray(),
 
     /*
     |--------------------------------------------------------------------------
