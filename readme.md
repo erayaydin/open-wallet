@@ -2,7 +2,7 @@
 
 <p align="center">
     <a href="https://laravel.com/"><img src="https://img.shields.io/badge/Laravel-10-FF2D20.svg?style=flat-square&logo=laravel" alt="Laravel 10"/></a>
-    <a href="https://www.php.net/"><img src="https://img.shields.io/badge/PHP-^8.1-777BB4.svg?style=flat-square&logo=php" alt="PHP ^8.1"/></a>
+    <a href="https://www.php.net/"><img src="https://img.shields.io/badge/PHP-^8.2-777BB4.svg?style=flat-square&logo=php" alt="PHP ^8.2"/></a>
     <a href="https://www.docker.com/"><img src="https://img.shields.io/badge/docker-3-2496ED.svg?style=flat-square&logo=docker" alt="Docker"/></a>
 </p>
 
