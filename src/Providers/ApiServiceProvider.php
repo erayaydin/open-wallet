@@ -8,37 +8,28 @@ use Illuminate\Support\ServiceProvider;
 
 class ApiServiceProvider extends ServiceProvider
 {
-    /** @var Application */
-    protected $app;
-
-    public function register(): void
-    {
-        $this->booted(function () {
-            if ($this->app->routesAreCached()) {
-                $this->app->booted(function () {
-                    require $this->app->getCachedRoutesPath();
-                });
-
-                return;
-            }
-
-            $this->loadRoutes();
-
-            $this->app->booted(function () {
-                /** @var Router */
-                $router = $this->app['router'];
-
-                $router->getRoutes()->refreshNameLookups();
-                $router->getRoutes()->refreshActionLookups();
+    public function boot(Application $app): void {
+        if ($app->routesAreCached()) {
+            $app->booted(function () use ($app) {
+                require $app->getCachedRoutesPath();
             });
+
+            return;
+        }
+
+        $app->call([$this, 'loadRoutes']);
+
+        $app->booted(function (Application $app) {
+            /** @var Router */
+            $router = $app['router'];
+
+            $router->getRoutes()->refreshNameLookups();
+            $router->getRoutes()->refreshActionLookups();
         });
     }
 
-    public function loadRoutes(): void
+    public function loadRoutes(Router $router): void
     {
-        /** @var Router */
-        $router = $this->app['router'];
-
         $router->prefix('api/v1')
             ->group(function (Router $router) {
                 $router->get('/', function () {
