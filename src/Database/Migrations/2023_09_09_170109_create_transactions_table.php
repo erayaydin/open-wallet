@@ -3,7 +3,6 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use OpenWallet\Models\User;
 
 return new class extends Migration
 {
@@ -12,10 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('accounts', function (Blueprint $table) {
-            $table->foreignIdFor(User::class)
-                ->constrained()
-                ->cascadeOnDelete();
+        Schema::create('transactions', function (Blueprint $table) {
+            $table->uuid('id')->unique();
+
+            $table->decimal('amount', 32, 12);
+            $table->text('description')->nullable();
+
+            $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -24,8 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('accounts', function (Blueprint $table) {
-            $table->dropConstrainedForeignIdFor(User::class);
-        });
+        Schema::dropIfExists('transactions');
     }
 };

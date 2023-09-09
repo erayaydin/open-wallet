@@ -4,11 +4,10 @@ namespace OpenWallet\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use OpenWallet\Traits\UsesUuid;
 
-class Account extends Model
+class Transaction extends Model
 {
     use SoftDeletes, UsesUuid;
 
@@ -18,21 +17,19 @@ class Account extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
-        'number',
-        'type',
-        'color',
-        'limit',
-        'deadline',
+        'description',
+        'amount',
     ];
 
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class);
-    }
+    /**
+     * The relationships that should always be loaded.
+     *
+     * @var array
+     */
+    protected $with = ['sourceAccount'];
 
-    public function transactions(): HasMany
+    public function sourceAccount(): BelongsTo
     {
-        return $this->hasMany(Transaction::class, 'source_account_id');
+        return $this->belongsTo(Account::class);
     }
 }

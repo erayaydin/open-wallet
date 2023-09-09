@@ -10,6 +10,7 @@ use OpenWallet\Api\Http\Controllers\Auth\AuthenticateController;
 use OpenWallet\Api\Http\Controllers\Auth\AuthMeController;
 use OpenWallet\Api\Http\Controllers\Auth\AuthRegisterController;
 use OpenWallet\Api\Http\Controllers\StatusController;
+use OpenWallet\Api\Http\Controllers\TransactionController;
 
 class ApiServiceProvider extends ServiceProvider
 {
@@ -58,6 +59,7 @@ class ApiServiceProvider extends ServiceProvider
                 $router->middleware(Authenticate::using('sanctum'))
                     ->group(function (Router $router) {
                         $router->apiResource('accounts', AccountController::class);
+                        $router->apiResource('transactions', TransactionController::class);
                     });
             });
     }
