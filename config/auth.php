@@ -14,7 +14,7 @@ return [
     */
 
     'defaults' => [
-        'guard' => null,
+        'guard' => 'sanctum',
         'passwords' => null,
     ],
 
