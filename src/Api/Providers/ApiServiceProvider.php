@@ -1,6 +1,6 @@
 <?php
 
-namespace OpenWallet\Providers;
+namespace OpenWallet\Api\Providers;
 
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
