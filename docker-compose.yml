@@ -60,7 +60,7 @@ services:
     depends_on:
       - pgsql
     environment:
-      PGADMIN_DEFAULT_EMAIL: '${PGADMIN_DEFAULT_EMAIL:-admin@ceptemenu.app}'
+      PGADMIN_DEFAULT_EMAIL: '${PGADMIN_DEFAULT_EMAIL:-admin@openwallet.test}'
       PGADMIN_DEFAULT_PASSWORD: '${PGADMIN_DEFAULT_PASSWORD:-secret}'
 networks:
   sail:
