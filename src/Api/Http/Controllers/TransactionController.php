@@ -67,9 +67,7 @@ class TransactionController extends Controller
             $category = Category::query()->find($request->input('category'));
 
             $transaction->category()->associate($category);
-        }
-        elseif ($transaction->category()->exists() && $request->has('category') && $request->get('category') === null)
-        {
+        } elseif ($transaction->category()->exists() && $request->has('category') && $request->get('category') === null) {
             $transaction->category()->dissociate();
         }
 

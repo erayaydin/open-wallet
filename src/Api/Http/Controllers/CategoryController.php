@@ -6,13 +6,9 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
-use OpenWallet\Api\Http\Requests\AccountCreateRequest;
-use OpenWallet\Api\Http\Requests\AccountEditRequest;
 use OpenWallet\Api\Http\Requests\CategoryCreateRequest;
 use OpenWallet\Api\Http\Requests\CategoryEditRequest;
-use OpenWallet\Api\Http\Resources\AccountResource;
 use OpenWallet\Api\Http\Resources\CategoryResource;
-use OpenWallet\Models\Account;
 use OpenWallet\Models\Category;
 use OpenWallet\Models\User;
 

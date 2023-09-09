@@ -5,7 +5,6 @@ namespace OpenWallet\Api\Http\Requests;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
-use OpenWallet\Models\AccountType;
 use OpenWallet\Models\CategoryType;
 
 class CategoryEditRequest extends FormRequest
@@ -34,7 +33,7 @@ class CategoryEditRequest extends FormRequest
             'color' => ['nullable', 'max:6', 'string'],
             'icon' => ['nullable', 'string'],
             'type' => ['nullable', Rule::in($types)],
-            'parent' => [$parentExists]
+            'parent' => [$parentExists],
         ];
     }
 }
