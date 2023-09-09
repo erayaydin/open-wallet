@@ -5,6 +5,7 @@ namespace OpenWallet\Api\Providers;
 use Illuminate\Auth\Middleware\Authenticate;
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
+use OpenWallet\Api\Http\Controllers\AccountController;
 use OpenWallet\Api\Http\Controllers\Auth\AuthenticateController;
 use OpenWallet\Api\Http\Controllers\Auth\AuthMeController;
 use OpenWallet\Api\Http\Controllers\Auth\AuthRegisterController;
@@ -52,6 +53,11 @@ class ApiServiceProvider extends ServiceProvider
 
                         $router->post('register', AuthRegisterController::class)
                             ->name('register');
+                    });
+
+                $router->middleware(Authenticate::using('sanctum'))
+                    ->group(function (Router $router) {
+                        $router->apiResource('accounts', AccountController::class);
                     });
             });
     }
