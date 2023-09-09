@@ -2,6 +2,7 @@
 
 namespace OpenWallet\UserAccess\Infrastructure\Laravel;
 
+use Illuminate\Auth\Middleware\Authenticate;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Router;
@@ -15,6 +16,7 @@ use OpenWallet\UserAccess\Domain\Repository\UserRepository;
 use OpenWallet\UserAccess\Infrastructure\Persistence\Eloquent\UserRepository as EloquentUserRepository;
 use OpenWallet\UserAccess\Interface\Http\Controllers\AccountRegisterController;
 use OpenWallet\UserAccess\Interface\Http\Controllers\AuthenticateController;
+use OpenWallet\UserAccess\Interface\Http\Controllers\GetAuthenticatedController;
 
 final class UserAccessDomainServiceProvider extends DomainServiceProvider
 {
@@ -61,6 +63,10 @@ final class UserAccessDomainServiceProvider extends DomainServiceProvider
                 $router
                     ->post('/', AuthenticateController::class)
                     ->name('token');
+
+                $router->get('me', GetAuthenticatedController::class)
+                    ->middleware([Authenticate::using('sanctum')])
+                    ->name('me');
             });
     }
 }
