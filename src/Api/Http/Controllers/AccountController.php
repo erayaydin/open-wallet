@@ -10,6 +10,7 @@ use OpenWallet\Api\Http\Requests\AccountCreateRequest;
 use OpenWallet\Api\Http\Requests\AccountEditRequest;
 use OpenWallet\Api\Http\Resources\AccountResource;
 use OpenWallet\Models\Account;
+use OpenWallet\Models\Currency;
 use OpenWallet\Models\User;
 
 class AccountController extends Controller
@@ -26,7 +27,14 @@ class AccountController extends Controller
     {
         /** @var User $user */
         $user = $request->user();
-        $account = $user->accounts()->create($request->validated());
+        /** @var Account $account */
+        $account = $user->accounts()->make($request->validated());
+
+        /** @var Currency $currency */
+        $currency = $user->currencies()->where('currency', $request->input('currency'))->firstOrFail();
+        $account->currency()->associate($currency);
+
+        $account->save();
 
         return new AccountResource($account);
     }

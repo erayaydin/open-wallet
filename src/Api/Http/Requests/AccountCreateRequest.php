@@ -6,6 +6,7 @@ use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use OpenWallet\Models\AccountType;
+use OpenWallet\Models\User;
 
 class AccountCreateRequest extends FormRequest
 {
@@ -24,10 +25,17 @@ class AccountCreateRequest extends FormRequest
      */
     public function rules(): array
     {
+        /** @var User $user */
+        $user = $this->user('sanctum');
         $types = array_map(fn ($c) => $c->value, AccountType::cases());
+        $currencies = $user->currencies()
+            ->pluck('currency');
+        $uniqueName = Rule::unique('accounts')
+            ->where('user_id', $user->getAttribute('id'));
 
         return [
-            'name' => ['required', 'min:3', 'string', Rule::unique('accounts')->where('user_id', $this->user('sanctum')->id)],
+            'name' => ['required', 'min:3', 'string', $uniqueName],
+            'currency' => ['required', 'string', Rule::in($currencies)],
             'number' => ['nullable'],
             'color' => ['nullable', 'max:6', 'string'],
             'type' => ['nullable', Rule::in($types)],

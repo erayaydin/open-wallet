@@ -24,6 +24,7 @@ class AccountResource extends JsonResource
             'number' => $this->resource->getAttribute('number'),
             'type' => $this->resource->getAttribute('type'),
             'color' => $this->resource->getAttribute('color'),
+            'currency' => new CurrencyResource($this->whenLoaded('currency')),
         ];
     }
 }

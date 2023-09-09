@@ -26,6 +26,8 @@ class Account extends Model
         'deadline',
     ];
 
+    protected $with = ['currency'];
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
@@ -34,5 +36,10 @@ class Account extends Model
     public function transactions(): HasMany
     {
         return $this->hasMany(Transaction::class, 'source_account_id');
+    }
+
+    public function currency(): BelongsTo
+    {
+        return $this->belongsTo(Currency::class);
     }
 }

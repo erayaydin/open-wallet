@@ -5,6 +5,7 @@ namespace OpenWallet\Api\Http\Requests;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use OpenWallet\Models\User;
 
 class TransactionEditRequest extends FormRequest
 {
@@ -23,14 +24,18 @@ class TransactionEditRequest extends FormRequest
      */
     public function rules(): array
     {
-        $userId = $this->user('sanctum')->id;
+        /** @var User $user */
+        $user = $this->user('sanctum');
         $existsSourceAccount = Rule::exists('accounts', 'id')
-            ->where('user_id', $userId);
+            ->where('user_id', $user->getAttribute('id'));
+        $currencies = $user->currencies()
+            ->pluck('currency');
         $existsCategory = Rule::exists('categories', 'id')
-            ->where('user_id', $userId);
+            ->where('user_id', $user->getAttribute('id'));
 
         return [
-            'amount' => ['required', 'decimal:0,8', 'not_in:0'],
+            'amount' => ['decimal:0,8', 'not_in:0'],
+            'currency' => ['string', Rule::in($currencies)],
             'source_account' => ['uuid', $existsSourceAccount],
             'category' => ['nullable', 'uuid', $existsCategory],
             'description' => ['nullable', 'string'],

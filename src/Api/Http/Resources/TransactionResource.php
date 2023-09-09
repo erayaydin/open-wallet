@@ -24,6 +24,7 @@ class TransactionResource extends JsonResource
             'description' => $this->resource->getAttribute('description'),
             'source_account' => new AccountResource($this->whenLoaded('sourceAccount')),
             'category' => new CategoryResource($this->whenLoaded('category')),
+            'currency' => new CurrencyResource($this->whenLoaded('currency')),
         ];
     }
 }
