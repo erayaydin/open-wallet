@@ -30,7 +30,7 @@ $app->useAppPath($app->basePath('src'));
 
 $app->singleton(
     Illuminate\Contracts\Http\Kernel::class,
-    Illuminate\Foundation\Http\Kernel::class
+    OpenWallet\Http\Kernel::class,
 );
 
 $app->singleton(

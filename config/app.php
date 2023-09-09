@@ -155,7 +155,9 @@ return [
     |
     */
 
-    'providers' => ServiceProvider::defaultProviders()->toArray(),
+    'providers' => ServiceProvider::defaultProviders()->merge([
+        OpenWallet\Providers\ApiServiceProvider::class,
+    ])->toArray(),
 
     /*
     |--------------------------------------------------------------------------
