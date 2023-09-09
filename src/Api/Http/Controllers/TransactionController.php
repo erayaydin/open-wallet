@@ -10,6 +10,7 @@ use OpenWallet\Api\Http\Requests\TransactionCreateRequest;
 use OpenWallet\Api\Http\Requests\TransactionEditRequest;
 use OpenWallet\Api\Http\Resources\TransactionResource;
 use OpenWallet\Models\Account;
+use OpenWallet\Models\Category;
 use OpenWallet\Models\Transaction;
 use OpenWallet\Models\User;
 
@@ -31,7 +32,16 @@ class TransactionController extends Controller
         $account = Account::query()->find($request->input('source_account'));
 
         /** @var Transaction $transaction */
-        $transaction = $account->transactions()->create($request->validated());
+        $transaction = $account->transactions()->make($request->validated());
+
+        if ($request->input('category')) {
+            /** @var Category $category */
+            $category = Category::query()->find($request->input('category'));
+
+            $transaction->category()->associate($category);
+        }
+
+        $transaction->save();
 
         return new TransactionResource($transaction);
     }
@@ -50,6 +60,17 @@ class TransactionController extends Controller
             $account = $user->accounts()->find($request->input('source_account'));
 
             $transaction->sourceAccount()->associate($account);
+        }
+
+        if ($request->input('category')) {
+            /** @var Category $category */
+            $category = Category::query()->find($request->input('category'));
+
+            $transaction->category()->associate($category);
+        }
+        elseif ($transaction->category()->exists() && $request->has('category') && $request->get('category') === null)
+        {
+            $transaction->category()->dissociate();
         }
 
         $transaction->update($request->validated());

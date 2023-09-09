@@ -26,10 +26,15 @@ class Transaction extends Model
      *
      * @var array
      */
-    protected $with = ['sourceAccount'];
+    protected $with = ['sourceAccount', 'category'];
 
     public function sourceAccount(): BelongsTo
     {
         return $this->belongsTo(Account::class);
+    }
+
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(Category::class);
     }
 }

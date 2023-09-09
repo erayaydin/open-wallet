@@ -56,4 +56,14 @@ class User extends Authenticatable
     {
         return $this->hasManyThrough(Transaction::class, Account::class, secondKey: 'source_account_id');
     }
+
+    public function categories(): HasMany
+    {
+        return $this->hasMany(Category::class);
+    }
+
+    public function rootCategories(): HasMany
+    {
+        return $this->hasMany(Category::class)->whereNull('parent_id');
+    }
 }

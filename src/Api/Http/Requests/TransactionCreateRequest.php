@@ -23,12 +23,16 @@ class TransactionCreateRequest extends FormRequest
      */
     public function rules(): array
     {
+        $userId = $this->user('sanctum')->id;
         $existsSourceAccount = Rule::exists('accounts', 'id')
-            ->where('user_id', $this->user('sanctum')->id);
+            ->where('user_id', $userId);
+        $existsCategory = Rule::exists('categories', 'id')
+            ->where('user_id', $userId);
 
         return [
             'amount' => ['required', 'decimal:0,8', 'not_in:0'],
             'source_account' => ['required', 'uuid', $existsSourceAccount],
+            'category' => ['nullable', 'uuid', $existsCategory],
             'description' => ['nullable', 'string'],
         ];
     }

@@ -5,8 +5,10 @@ namespace OpenWallet\Api\Http\Requests;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use OpenWallet\Models\AccountType;
+use OpenWallet\Models\CategoryType;
 
-class TransactionEditRequest extends FormRequest
+class CategoryEditRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,17 +25,16 @@ class TransactionEditRequest extends FormRequest
      */
     public function rules(): array
     {
-        $userId = $this->user('sanctum')->id;
-        $existsSourceAccount = Rule::exists('accounts', 'id')
-            ->where('user_id', $userId);
-        $existsCategory = Rule::exists('categories', 'id')
-            ->where('user_id', $userId);
+        $types = array_map(fn ($c) => $c->value, CategoryType::cases());
+        $parentExists = Rule::exists('categories', 'id')
+            ->where('user_id', $this->user('sanctum')->id);
 
         return [
-            'amount' => ['required', 'decimal:0,8', 'not_in:0'],
-            'source_account' => ['uuid', $existsSourceAccount],
-            'category' => ['nullable', 'uuid', $existsCategory],
-            'description' => ['nullable', 'string'],
+            'name' => ['min:3', 'string'],
+            'color' => ['nullable', 'max:6', 'string'],
+            'icon' => ['nullable', 'string'],
+            'type' => ['nullable', Rule::in($types)],
+            'parent' => [$parentExists]
         ];
     }
 }
