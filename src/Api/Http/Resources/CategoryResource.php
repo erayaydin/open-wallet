@@ -23,6 +23,7 @@ class CategoryResource extends JsonResource
             'name' => $this->resource->getAttribute('name'),
             'color' => $this->resource->getAttribute('color'),
             'icon' => $this->resource->getAttribute('icon'),
+            'is_show' => $this->resource->getAttribute('is_show'),
             'type' => $this->resource->getAttribute('type'),
             'subs' => CategoryResource::collection($this->whenLoaded('subs')),
         ];

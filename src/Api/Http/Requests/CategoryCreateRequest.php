@@ -32,6 +32,7 @@ class CategoryCreateRequest extends FormRequest
             'name' => ['required', 'min:3', 'string'],
             'color' => ['nullable', 'max:6', 'string'],
             'icon' => ['nullable', 'string'],
+            'is_show' => ['boolean'],
             'type' => ['nullable', Rule::in($types)],
             'parent' => [$parentExists],
         ];

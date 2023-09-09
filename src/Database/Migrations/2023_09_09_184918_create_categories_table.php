@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('color', 6)->nullable();
             $table->string('icon')->nullable();
             $table->string('type')->nullable();
+            $table->boolean('is_show')->default(true);
         });
     }
 
