@@ -1,0 +1,30 @@
+<?php
+
+namespace OpenWallet\Api\Http\Requests;
+
+use Illuminate\Contracts\Validation\ValidationRule;
+use Illuminate\Foundation\Http\FormRequest;
+
+class CurrencyEditRequest extends FormRequest
+{
+    /**
+     * Determine if the user is authorized to make this request.
+     */
+    public function authorize(): bool
+    {
+        return true;
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array<string, ValidationRule|array|string>
+     */
+    public function rules(): array
+    {
+        return [
+            'exchange_buy' => ['decimal:0,5'],
+            'exchange_sell' => ['decimal:0,5'],
+        ];
+    }
+}

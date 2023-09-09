@@ -5,13 +5,16 @@ namespace OpenWallet\Api\Providers;
 use Illuminate\Auth\Middleware\Authenticate;
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Str;
 use OpenWallet\Api\Http\Controllers\AccountController;
 use OpenWallet\Api\Http\Controllers\Auth\AuthenticateController;
 use OpenWallet\Api\Http\Controllers\Auth\AuthMeController;
 use OpenWallet\Api\Http\Controllers\Auth\AuthRegisterController;
 use OpenWallet\Api\Http\Controllers\CategoryController;
+use OpenWallet\Api\Http\Controllers\CurrencyController;
 use OpenWallet\Api\Http\Controllers\StatusController;
 use OpenWallet\Api\Http\Controllers\TransactionController;
+use OpenWallet\Models\User;
 
 class ApiServiceProvider extends ServiceProvider
 {
@@ -62,6 +65,15 @@ class ApiServiceProvider extends ServiceProvider
                         $router->apiResource('accounts', AccountController::class);
                         $router->apiResource('transactions', TransactionController::class);
                         $router->apiResource('categories', CategoryController::class);
+
+                        $router->bind('currency', function ($value) {
+                            /** @var User $user */
+                            $user = request()->user('sanctum');
+
+                            return $user->currencies()->where('currency', Str::upper($value))->firstOrFail();
+                        });
+
+                        $router->apiResource('currencies', CurrencyController::class);
                     });
             });
     }

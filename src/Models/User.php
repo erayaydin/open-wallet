@@ -66,4 +66,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Category::class)->whereNull('parent_id');
     }
+
+    public function currencies(): HasMany
+    {
+        return $this->hasMany(Currency::class);
+    }
 }
