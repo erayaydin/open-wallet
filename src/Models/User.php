@@ -2,10 +2,18 @@
 
 namespace OpenWallet\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Laravel\Sanctum\HasApiTokens;
+use OpenWallet\Traits\UsesUuid;
 
+/**
+ * @mixin Builder
+ */
 class User extends Authenticatable
 {
+    use HasApiTokens, UsesUuid;
+
     /**
      * The attributes that are mass assignable.
      *
