@@ -5,6 +5,7 @@ namespace OpenWallet\Api\Providers;
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
 use OpenWallet\Api\Http\Controllers\Auth\AuthenticateController;
+use OpenWallet\Api\Http\Controllers\Auth\AuthRegisterController;
 use OpenWallet\Api\Http\Controllers\StatusController;
 
 class ApiServiceProvider extends ServiceProvider
@@ -42,6 +43,9 @@ class ApiServiceProvider extends ServiceProvider
                     ->group(function (Router $router) {
                         $router->post('/', AuthenticateController::class)
                             ->name('get_token');
+
+                        $router->post('register', AuthRegisterController::class)
+                            ->name('register');
                     });
             });
     }
